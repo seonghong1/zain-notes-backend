@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Note } from './notes.entity';
+import { NoteDto } from './dto/note.dto';
+import { CreateNoteDto } from './dto/create-note.dto';
 
 @Injectable()
 export class NoteService {
@@ -11,11 +13,14 @@ export class NoteService {
     private noteRepository: Repository<Note>,
   ) {}
 
-  getHello(): string {
-    return 'Hello World!';
+  async findAll(): Promise<NoteDto[]> {
+    const notes = await this.noteRepository.find();
+    console.log(notes);
+    return notes.map((note: Note) => new NoteDto(note));
   }
 
-  findAll(): Promise<Note[]> {
-    return this.noteRepository.find();
+  async create(noteData: CreateNoteDto): Promise<number> {
+    const result = await this.noteRepository.insert(noteData);
+    return result.identifiers[0].id; // 삽입된 레코드의 ID 반환
   }
 }

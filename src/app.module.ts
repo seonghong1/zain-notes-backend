@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config'; // ConfigModule 임포트
 import { NotesModule } from './notes/notes.module';
+import { UserModule } from './users/user.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { NotesModule } from './notes/notes.module';
       }),
     }),
 
+    UserModule,
     NotesModule,
   ],
 })
