@@ -8,7 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -34,11 +34,30 @@ export class UserService {
     return result.identifiers[0].id; // 삽입된 레코드의 ID 반환
   }
 
+  async findOne(email: string, password: string): Promise<User | undefined> {
+    const user = await this.userRepository.findOne({
+      where: { email: email },
+    });
+
+    if (!user) {
+      throw new BadRequestException('존재하지 않는 이메일입니다.');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new BadRequestException('비밀번호가 일치하지 않습니다.');
+    }
+
+    return user;
+  }
+
   // 로그인
   async login(userData: LoginUserDto): Promise<LoginUserDto> {
     const user = await this.userRepository.findOne({
       where: { email: userData.email },
     });
+
     if (!user) {
       throw new BadRequestException('존재하지 않는 이메일입니다.');
     }
@@ -47,6 +66,7 @@ export class UserService {
       userData.password,
       user.password,
     );
+
     if (!isPasswordValid) {
       throw new BadRequestException('비밀번호가 일치하지 않습니다.');
     }
