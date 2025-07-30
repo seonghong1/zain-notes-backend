@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Note } from './notes.entity';
+import { Note } from './entities/note.entity';
 import { NoteDto } from './dto/note.dto';
 import { CreateNoteDto } from './dto/create-note.dto';
 import Redis from 'ioredis';

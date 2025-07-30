@@ -5,7 +5,7 @@ import {
   IsNumber,
   IsDate,
 } from 'class-validator';
-import { Note } from '../notes.entity';
+import { Note } from '../entities/note.entity';
 
 export class NoteDto {
   constructor(note: Note) {

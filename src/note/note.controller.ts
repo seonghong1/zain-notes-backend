@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { NoteService } from './notes.service';
+import { NoteService } from './note.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { NoteDto } from './dto/note.dto';
 

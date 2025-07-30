@@ -9,8 +9,11 @@ import {
 
 @Entity('notes')
 export class Note {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'integer' }) // serial4 → integer
   id: number;
+
+  @Column({ name: 'user_id', type: 'integer' })
+  userId: number;
 
   @Column({ type: 'varchar', length: 255 })
   title: string;
@@ -21,20 +24,28 @@ export class Note {
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
+    default: () => 'now()',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
+    default: () => 'now()',
   })
   updatedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz', nullable: true })
+  @DeleteDateColumn({
+    name: 'deleted_at',
+    type: 'timestamptz',
+    nullable: true,
+  })
   deletedAt: Date | null;
 
-  @Column({ name: 'is_deleted', type: 'bool', default: false })
+  @Column({
+    name: 'is_deleted',
+    type: 'boolean',
+    default: false,
+  })
   isDeleted: boolean;
 }

@@ -1,11 +1,11 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 
 @Controller('users')
-export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   @Post('/signin')
   login(@Body() userData: LoginUserDto): Promise<LoginUserDto> {

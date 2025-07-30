@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Note } from './notes.entity';
-import { NoteService } from './notes.service';
-import { NoteController } from './notes.controller';
+import { Note } from './entities/note.entity';
+import { NoteService } from './note.service';
+import { NoteController } from './note.controller';
 import { RedisModule } from 'src/redis/redis.module';
 
 @Module({
@@ -10,4 +10,4 @@ import { RedisModule } from 'src/redis/redis.module';
   providers: [NoteService],
   controllers: [NoteController],
 })
-export class NotesModule {}
+export class NoteModule {}

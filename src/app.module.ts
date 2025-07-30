@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config'; // ConfigModule 임포트
-import { NotesModule } from './notes/notes.module';
-import { UsersModule } from './users/users.module';
+import { NoteModule } from './note/note.module';
+import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
@@ -30,9 +31,10 @@ import { AuthModule } from './auth/auth.module';
       }),
     }),
 
-    UsersModule,
-    NotesModule,
+    UserModule,
+    NoteModule,
     AuthModule,
+    TodoModule,
   ],
 })
 export class AppModule {}
