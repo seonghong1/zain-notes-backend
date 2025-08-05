@@ -7,8 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "start:dev": "nest start --watch",
-    "tunnel:postgres": "ssh -i /Users/joseonghong/Downloads/zain-notes-api-ec2-key.pem -L 5433:zain-notes-database.cz0auuq46o2v.ap-northeast-2.rds.amazonaws.com:5432 ubuntu@3.34.125.8 -N",
-    "tunnel:redis": "ssh -i /Users/joseonghong/Downloads/zain-notes-api-ec2-key.pem -L 6379:zain-notes-redis-vxngrb.serverless.apn2.cache.amazonaws.com:6379 ubuntu@3.34.125.8 -N",
+    "tunnel:postgres": "ssh -i /Users/joseonghong/Downloads/zain-notes-api-ec2-key.pem -L 5433:zain-notes-database.cz0auuq46o2v.ap-northeast-2.rds.amazonaws.com:5432 ubuntu@3.35.45.76 -N",
+    "tunnel:redis": "ssh -i /Users/joseonghong/Downloads/zain-notes-api-ec2-key.pem -L 6379:localhost:6379 ubuntu@3.35.45.76 -N",
     "dev:with-all-tunnels": "concurrently \"npm run tunnel:postgres\" \"npm run tunnel:redis\" \"sleep 5 && npm run start:dev\"",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

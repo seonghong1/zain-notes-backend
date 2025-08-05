@@ -6,6 +6,8 @@ import { AuthController } from './auth.controller';
 import { jwtConstants } from './constants';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
+import { RedisModule } from '../redis/redis.module';
+import { RedisProvider } from 'src/redis/redis.provider';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { AuthGuard } from './auth.guard';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '1h' },
     }),
+    RedisModule,
   ],
   providers: [
     AuthService,
@@ -22,6 +25,7 @@ import { AuthGuard } from './auth.guard';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    RedisProvider,
   ],
   controllers: [AuthController],
   exports: [AuthService],
