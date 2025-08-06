@@ -13,7 +13,7 @@ async function bootstrap() {
       'https://zain-notes.com',
       'https://api.zain-notes.com',
     ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // 쿠키 전송 허용
   });
