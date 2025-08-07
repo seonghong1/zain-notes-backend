@@ -31,8 +31,8 @@ export class AuthController {
     // Set-Cookie 헤더에 토큰 설정
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      maxAge: 15 * 60 * 1000,
-    }); // 15분
+      maxAge: 6 * 60 * 60 * 1000,
+    }); // 6시간
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,

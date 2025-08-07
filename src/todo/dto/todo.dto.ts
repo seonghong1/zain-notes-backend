@@ -10,6 +10,7 @@ import { Todo } from '../entities/todo.entity';
 export class TodoDto {
   constructor(todo: Todo) {
     this.id = todo.id;
+    this.userId = todo.userId;
     this.content = todo.content;
     this.isDone = todo.isDone;
     this.createdAt = todo.createdAt;
@@ -20,6 +21,9 @@ export class TodoDto {
 
   @IsNumber()
   id: number;
+
+  @IsNumber()
+  userId: number;
 
   @IsString()
   @IsOptional()

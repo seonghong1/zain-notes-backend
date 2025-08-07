@@ -15,7 +15,7 @@ import { RedisProvider } from 'src/redis/redis.provider';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '6h' },
     }),
     RedisModule,
   ],
