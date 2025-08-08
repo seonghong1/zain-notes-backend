@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -29,8 +30,11 @@ export class TodoController {
   }
 
   @Get()
-  findAll(@User('sub') userId: number): Promise<TodoDto[]> {
-    return this.todoService.findAll(userId);
+  findAll(
+    @User('sub') userId: number,
+    @Query('date') date?: string,
+  ): Promise<TodoDto[]> {
+    return this.todoService.findAll(userId, { date });
   }
 
   @Patch(':id')

@@ -3,7 +3,7 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Todo } from './entities/todo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Between } from 'typeorm';
 import { TodoDto } from './dto/todo.dto';
 
 @Injectable()
@@ -13,11 +13,27 @@ export class TodoService {
     private todoRepository: Repository<Todo>,
   ) {}
 
-  async findAll(userId: number): Promise<TodoDto[]> {
+  async findAll(userId: number, query?: { date?: string }): Promise<TodoDto[]> {
+    const whereCondition: any = {
+      isDeleted: false,
+      userId,
+    };
+
+    if (query?.date) {
+      const startDate = new Date(query.date);
+      startDate.setHours(0, 0, 0, 0);
+
+      const endDate = new Date(query.date);
+      endDate.setHours(23, 59, 59, 999);
+
+      whereCondition.createdAt = Between(startDate, endDate);
+    }
+
     const todos = await this.todoRepository.find({
-      where: { isDeleted: false, userId },
+      where: whereCondition,
       order: { id: 'desc' },
     });
+
     return todos.map((todo) => new TodoDto(todo));
   }
 
@@ -46,7 +62,6 @@ export class TodoService {
     todo.isDone = updateTodoDto.isDone;
 
     const updatedTodo = await this.todoRepository.save(todo);
-    console.log(updatedTodo);
 
     return new TodoDto(updatedTodo);
   }
