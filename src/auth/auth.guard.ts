@@ -29,7 +29,6 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      console.log(token);
       throw new UnauthorizedException();
     }
     try {
@@ -48,7 +47,6 @@ export class AuthGuard implements CanActivate {
   private extractTokenFromHeader(request: Request): string | undefined {
     // 쿠키에서도 accessToken 추출
     if (request.cookies && request.cookies.accessToken) {
-      console.log(request.cookies.accessToken);
       return request.cookies.accessToken;
     }
 

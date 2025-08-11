@@ -43,7 +43,6 @@ export class TodoController {
     @Body() updateTodoDto: UpdateTodoDto,
     @User('sub') userId: number,
   ): Promise<TodoDto> {
-    console.log('called');
     return this.todoService.update(Number(id), updateTodoDto, userId);
   }
 

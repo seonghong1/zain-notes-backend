@@ -37,7 +37,6 @@ export class AuthService {
       `refreshToken:${user.id}`,
     );
 
-    console.log('storedRefreshToken', storedRefreshToken);
 
     return { accessToken, refreshToken };
   }

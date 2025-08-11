@@ -36,7 +36,6 @@ export class NoteController {
     @User('sub') userId: number,
     @Param('id') id: number,
   ): Promise<NoteDto> {
-    console.log(id);
     return this.noteService.findById(userId, id);
   }
 
