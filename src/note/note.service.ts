@@ -1,6 +1,6 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Raw, Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 
 import { Note } from './entities/note.entity';
 import { NoteDto } from './dto/note.dto';
@@ -26,12 +26,7 @@ export class NoteService {
 
       const endDate = new Date(query.date);
       endDate.setHours(23, 59, 59, 999);
-
-      whereCondition.createdAt = Raw(
-        (alias) =>
-          `${alias} AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Seoul' BETWEEN :startDate AND :endDate`,
-        { startDate, endDate },
-      );
+      whereCondition.createdAt = Between(startDate, endDate);
     }
 
     const notes = await this.noteRepository.find({
@@ -43,7 +38,6 @@ export class NoteService {
   }
 
   async findById(userId: number, id: number): Promise<NoteDto> {
-    console.log(id);
     const note = await this.noteRepository.findOne({ where: { id, userId } });
 
     if (!note) {
