@@ -21,11 +21,9 @@ export class NoteService {
     };
 
     if (query?.date) {
-      const startDate = new Date(query.date);
-      startDate.setHours(0, 0, 0, 0);
-
-      const endDate = new Date(query.date);
-      endDate.setHours(23, 59, 59, 999);
+      console.log('query.date : ', query.date);
+      const startDate = new Date(query.date + 'T00:00:00+09:00');
+      const endDate = new Date(query.date + 'T23:59:59+09:00');
       whereCondition.createdAt = Between(startDate, endDate);
     }
 
