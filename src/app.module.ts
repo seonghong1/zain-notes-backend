@@ -16,6 +16,7 @@ import { TodoModule } from './todo/todo.module';
       imports: [ConfigModule], // ConfigModule을 가져옵니다.
       inject: [ConfigService], // ConfigService를 주입합니다.
       useFactory: (configService: ConfigService) => ({
+        timezone: 'Z',
         // useFactory로 비동기 설정
         type: 'postgres',
         host: configService.get<string>('DB_HOST'),
