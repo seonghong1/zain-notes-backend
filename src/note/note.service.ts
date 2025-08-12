@@ -7,6 +7,8 @@ import { NoteDto } from './dto/note.dto';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 
+import { getUtcStartAndEndDates } from '../common/data.util';
+
 @Injectable()
 export class NoteService {
   constructor(
@@ -21,9 +23,9 @@ export class NoteService {
     };
 
     if (query?.date) {
-      console.log('query.date : ', query.date);
-      const startDate = new Date(query.date + 'T00:00:00+09:00');
-      const endDate = new Date(query.date + 'T23:59:59+09:00');
+      const timestamp = Number(query.date);
+      const { startDate, endDate } = getUtcStartAndEndDates(timestamp);
+      console.log('startDate : ', startDate, 'endDate : ', endDate);
       whereCondition.createdAt = Between(startDate, endDate);
     }
 
@@ -31,6 +33,8 @@ export class NoteService {
       where: whereCondition,
       order: { id: 'desc' },
     });
+
+    console.log('notes : ', notes);
 
     return notes.map((note: Note) => new NoteDto(note));
   }
