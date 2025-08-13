@@ -3,8 +3,9 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Todo } from './entities/todo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Raw } from 'typeorm';
+import { Repository, Between } from 'typeorm';
 import { TodoDto } from './dto/todo.dto';
+import { getUtcStartAndEndDates } from 'src/common/data.util';
 
 @Injectable()
 export class TodoService {
@@ -20,17 +21,10 @@ export class TodoService {
     };
 
     if (query?.date) {
-      const startDate = new Date(query.date);
-      startDate.setHours(0, 0, 0, 0);
+      const timestamp = Number(query.date);
+      const { startDate, endDate } = getUtcStartAndEndDates(timestamp);
 
-      const endDate = new Date(query.date);
-      endDate.setHours(23, 59, 59, 999);
-
-      whereCondition.createdAt = Raw(
-        (alias) =>
-          `${alias} AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Seoul' BETWEEN :startDate AND :endDate`,
-        { startDate, endDate },
-      );
+      whereCondition.createdAt = Between(startDate, endDate);
     }
 
     const todos = await this.todoRepository.find({

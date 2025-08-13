@@ -6,6 +6,7 @@ import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
+import { UserDto } from './dto/user.dtd';
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,7 @@ export class UserService {
   }
 
   // 회원가입
-  async create(userData: CreateUserDto): Promise<number> {
+  async create(userData: CreateUserDto): Promise<UserDto> {
     const isTaken = await this.isEmailTaken(userData.email);
     if (isTaken) {
       throw new BadRequestException('이미 존재하는 이메일입니다.');
