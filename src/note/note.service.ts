@@ -35,6 +35,7 @@ export class NoteService {
     });
 
     console.log('notes : ', notes);
+    console.log('deploytest');
 
     return notes.map((note: Note) => new NoteDto(note));
   }
