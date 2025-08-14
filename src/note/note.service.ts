@@ -20,12 +20,24 @@ export class NoteService {
     userId: number,
     query: { startDate: string; endDate: string },
   ): Promise<NoteDto[]> {
+    // 서버 환경 정보 체크
+    console.log('=== Server Environment Check ===');
+    console.log('Server timezone offset:', new Date().getTimezoneOffset());
+    console.log('Server current time:', new Date().toString());
+    console.log('Server current time ISO:', new Date().toISOString());
+    console.log(
+      'Server timezone:',
+      Intl.DateTimeFormat().resolvedOptions().timeZone,
+    );
+    console.log('Node.js version:', process.version);
+    console.log('Platform:', process.platform);
+    console.log('================================');
+
     const whereCondition: any = {
       isDeleted: false,
       userId,
     };
 
-    // 문자열을 Date 객체로 변환하여 Between에 전달
     const startDate = new Date(query.startDate);
     const endDate = new Date(query.endDate);
     console.log('startDate : ', startDate, 'endDate : ', endDate);
@@ -37,7 +49,21 @@ export class NoteService {
       order: { id: 'desc' },
     });
 
-    console.log('notes : ', notes);
+    // DB 쿼리 결과 체크
+    console.log('=== Database Query Result ===');
+    console.log('Query result count:', notes.length);
+    if (notes.length > 0) {
+      console.log('First note createdAt:', notes[0].createdAt);
+      console.log(
+        'First note createdAt ISO:',
+        notes[0].createdAt.toISOString(),
+      );
+      console.log(
+        'First note createdAt toString:',
+        notes[0].createdAt.toString(),
+      );
+    }
+    console.log('=============================');
 
     return notes.map((note: Note) => new NoteDto(note));
   }
