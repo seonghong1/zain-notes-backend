@@ -25,7 +25,7 @@ jobs:
           cd /home/ubuntu/zain-notes-backend
           git fetch --all
           git reset --hard origin/main
-          npm install --production
+          npm install
           npm run build
           pm2 restart zain-notes-app
           EOF
