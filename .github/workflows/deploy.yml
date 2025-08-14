@@ -1,0 +1,33 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main # main 브랜치에 push될 때 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 깃허브 저장소 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. SSH 설정 (비밀키 등록 필요)
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      # 3. EC2에 배포 명령 실행
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+          cd /home/ubuntu/zain-notes-backend
+          git fetch --all
+          git reset --hard origin/main
+          npm install --production
+          npm run build
+          pm2 restart zain-notes-app
+          EOF
