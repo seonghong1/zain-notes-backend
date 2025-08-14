@@ -24,9 +24,10 @@ export class NoteController {
   @UseGuards(AuthGuard)
   findAll(
     @User('sub') userId: number,
-    @Query('date') date?: string,
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
   ): Promise<NoteDto[]> {
-    const notes = this.noteService.findAll(userId, { date });
+    const notes = this.noteService.findAll(userId, { startDate, endDate });
     return notes;
   }
 

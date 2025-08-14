@@ -16,18 +16,21 @@ export class NoteService {
     private noteRepository: Repository<Note>,
   ) {}
 
-  async findAll(userId: number, query?: { date?: string }): Promise<NoteDto[]> {
+  async findAll(
+    userId: number,
+    query: { startDate: string; endDate: string },
+  ): Promise<NoteDto[]> {
     const whereCondition: any = {
       isDeleted: false,
       userId,
     };
 
-    if (query?.date) {
-      const timestamp = Number(query.date);
-      const { startDate, endDate } = getUtcStartAndEndDates(timestamp);
-      console.log('startDate : ', startDate, 'endDate : ', endDate);
-      whereCondition.createdAt = Between(startDate, endDate);
-    }
+    // 문자열을 Date 객체로 변환하여 Between에 전달
+    const startDate = new Date(query.startDate);
+    const endDate = new Date(query.endDate);
+    console.log('startDate : ', startDate, 'endDate : ', endDate);
+
+    whereCondition.createdAt = Between(startDate, endDate);
 
     const notes = await this.noteRepository.find({
       where: whereCondition,
@@ -35,7 +38,6 @@ export class NoteService {
     });
 
     console.log('notes : ', notes);
-    console.log('deploytest');
 
     return notes.map((note: Note) => new NoteDto(note));
   }
@@ -58,8 +60,8 @@ export class NoteService {
     };
 
     const note = this.noteRepository.create(data);
-
     const result = await this.noteRepository.save(note);
+    console.log('result : ', result);
     return new NoteDto(result);
   }
 

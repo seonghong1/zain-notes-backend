@@ -14,18 +14,19 @@ export class TodoService {
     private todoRepository: Repository<Todo>,
   ) {}
 
-  async findAll(userId: number, query?: { date?: string }): Promise<TodoDto[]> {
+  async findAll(
+    userId: number,
+    query: { startDate: string; endDate: string },
+  ): Promise<TodoDto[]> {
     const whereCondition: any = {
       isDeleted: false,
       userId,
     };
 
-    if (query?.date) {
-      const timestamp = Number(query.date);
-      const { startDate, endDate } = getUtcStartAndEndDates(timestamp);
+    const startDate = new Date(query.startDate);
+    const endDate = new Date(query.endDate);
 
-      whereCondition.createdAt = Between(startDate, endDate);
-    }
+    whereCondition.createdAt = Between(startDate, endDate);
 
     const todos = await this.todoRepository.find({
       where: whereCondition,

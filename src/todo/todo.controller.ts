@@ -32,9 +32,10 @@ export class TodoController {
   @Get()
   findAll(
     @User('sub') userId: number,
-    @Query('date') date?: string,
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
   ): Promise<TodoDto[]> {
-    return this.todoService.findAll(userId, { date });
+    return this.todoService.findAll(userId, { startDate, endDate });
   }
 
   @Patch(':id')
