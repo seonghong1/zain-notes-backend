@@ -67,4 +67,13 @@ export class NoteController {
   ): Promise<number> {
     return this.noteService.delete(id, userId);
   }
+
+  @Get('/:id/ai-process')
+  @UseGuards(AuthGuard)
+  summarizeAndOrganizeNote(
+    @Param('id') id: number,
+    @User('sub') userId: number,
+  ): Promise<string> {
+    return this.noteService.summarizeAndOrganizeNote(id, userId);
+  }
 }

@@ -54,4 +54,12 @@ export class TodoController {
   ): Promise<TodoDto> {
     return this.todoService.remove(Number(id), userId);
   }
+
+  @Get(':id')
+  generateSuggestions(
+    @User('sub') userId: number,
+    @Query('context') context?: string,
+  ): Promise<string> {
+    return this.todoService.generateTodoSuggestions(userId, context);
+  }
 }

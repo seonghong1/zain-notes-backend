@@ -1,5 +1,29 @@
 # Zain Notes Backend
 
+## OpenAI API 설정
+
+이 프로젝트는 OpenAI API를 활용하여 노트와 할 일에 AI 기능을 제공합니다.
+
+### 환경 변수 설정
+
+`.env` 파일에 다음 환경 변수를 추가하세요:
+
+```bash
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+### OpenAI 기능
+
+#### Notes AI 기능
+
+- **노트 분석**: `GET /notes/:id/analyze` - 노트 내용을 AI가 분석하고 요약
+- **노트 개선**: `GET /notes/:id/improve` - 노트 내용을 AI가 개선하고 명확하게 작성
+
+#### Todos AI 기능
+
+- **할 일 제안**: `GET /todos/suggestions?context=컨텍스트` - AI가 컨텍스트를 바탕으로 할 일 제안
+
 ## NestJS 기본 아키텍처 및 디자인 패턴
 
 NestJS는 모듈(Module) 기반의 구조와 의존성 주입(Dependency Injection)을 활용한 아키텍처를 제공합니다. 각 비즈니스 도메인은 별도의 모듈로 분리하여 유지보수성과 확장성을 높입니다.

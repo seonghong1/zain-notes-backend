@@ -6,14 +6,14 @@ import { Note } from './entities/note.entity';
 import { NoteDto } from './dto/note.dto';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
-
-import { getUtcStartAndEndDates } from '../common/data.util';
+import { OpenaiService } from '../openai/openai.service';
 
 @Injectable()
 export class NoteService {
   constructor(
     @InjectRepository(Note)
     private noteRepository: Repository<Note>,
+    private openaiService: OpenaiService,
   ) {}
 
   async findAll(
@@ -118,5 +118,15 @@ export class NoteService {
 
     await this.noteRepository.softDelete(id);
     return id;
+  }
+
+  async summarizeAndOrganizeNote(id: number, userId: number): Promise<string> {
+    const note = await this.noteRepository.findOne({ where: { id, userId } });
+
+    if (!note) {
+      throw new NotFoundException('Note not found');
+    }
+
+    return this.openaiService.summarizeAndOrganizeNote(note.content);
   }
 }

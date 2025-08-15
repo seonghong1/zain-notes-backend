@@ -5,6 +5,7 @@ import { NoteModule } from './note/note.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { TodoModule } from './todo/todo.module';
+import { OpenaiModule } from './openai/openai.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { TodoModule } from './todo/todo.module';
     NoteModule,
     AuthModule,
     TodoModule,
+    OpenaiModule,
   ],
 })
 export class AppModule {}

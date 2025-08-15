@@ -5,6 +5,7 @@ import { Todo } from './entities/todo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between } from 'typeorm';
 import { TodoDto } from './dto/todo.dto';
+import { OpenaiService } from '../openai/openai.service';
 import { getUtcStartAndEndDates } from 'src/common/data.util';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class TodoService {
   constructor(
     @InjectRepository(Todo)
     private todoRepository: Repository<Todo>,
+    private openaiService: OpenaiService,
   ) {}
 
   async findAll(
@@ -79,5 +81,27 @@ export class TodoService {
     const updatedTodo = await this.todoRepository.save(todo);
 
     return new TodoDto(updatedTodo);
+  }
+
+  async generateTodoSuggestions(
+    userId: number,
+    context?: string,
+  ): Promise<string> {
+    // 사용자의 기존 할 일들을 가져와서 컨텍스트로 활용
+    const recentTodos = await this.todoRepository.find({
+      where: { userId, isDeleted: false },
+      order: { createdAt: 'desc' },
+      take: 5,
+    });
+
+    const contextText = context || '일반적인 할 일';
+    const recentTodoText =
+      recentTodos.length > 0
+        ? `최근 할 일들: ${recentTodos.map((t) => t.content).join(', ')}`
+        : '';
+
+    const fullContext = `${contextText}. ${recentTodoText}`;
+
+    return this.openaiService.generateTodoSuggestion(fullContext);
   }
 }
